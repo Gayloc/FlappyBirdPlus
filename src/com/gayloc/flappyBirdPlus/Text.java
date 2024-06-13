@@ -8,7 +8,7 @@ public class Text extends Component{
     protected Color color;
     protected Font font;
 
-    public Text(Position position, int size, String content, Color color, Font font) {
+    public Text(Vec position, int size, String content, Color color, Font font) {
         super(position, new Dimension(content.length()*size, size));
         this.content = content;
         this.color = color;

@@ -3,18 +3,18 @@ package com.gayloc.flappyBirdPlus;
 import java.awt.*;
 
 public abstract class Component {
-    protected Position position;
+    protected Vec position;
     protected Dimension size;
-    protected Position velocity = new Position(0, 0);
-    protected Position acceleration = new Position(0, 0);
+    protected Vec velocity = new Vec(0, 0);
+    protected Vec acceleration = new Vec(0, 0);
     protected Boolean isPhysical = false;
 
-    public Component(Position position, Dimension size) {
+    public Component(Vec position, Dimension size) {
         this.position = position;
         this.size = size;
     }
 
-    public Component(Position position, Dimension size, Position velocity, Position acceleration) {
+    public Component(Vec position, Dimension size, Vec velocity, Vec acceleration) {
         this.position = position;
         this.size = size;
         this.velocity = velocity;
@@ -57,15 +57,15 @@ public abstract class Component {
         this.acceleration.y = y;
     }
 
-    public Position getVelocity() {
+    public Vec getVelocity() {
         return velocity;
     }
 
-    public Position getAcceleration() {
+    public Vec getAcceleration() {
         return acceleration;
     }
 
-    public Position getPosition() {
+    public Vec getPosition() {
         return position;
     }
 

@@ -10,6 +10,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
 
     private final Player player;
     private final LocationText lt;
+    private final java.util.Queue<Wall> walls = controller.getWalls();
 
     public Board() {
         int boardWidth = App.WIDTH;
@@ -18,7 +19,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         setBackground(new Color(232, 232, 232));
 
         player = controller.getPlayer();
-        lt = new LocationText(new Position(0,20 ), 100, player);
+        lt = new LocationText(new Vec(0,20 ), 100, player);
 
         int DELAY = 5;
 
@@ -35,6 +36,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         // prevent the player from disappearing off the board
         player.tick();
         lt.tick();
+        walls.forEach(Wall::tick);
 
         controller.tick();
         // calling repaint() will trigger paintComponent() to run again,
@@ -50,6 +52,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
         drawBackground(g);
         player.render(g);
         lt.render(g);
+        walls.forEach(w -> w.render(g));
 
         // this smooths out animations on some systems
         Toolkit.getDefaultToolkit().sync();

@@ -1,10 +1,10 @@
 package com.gayloc.flappyBirdPlus;
 
-public class Position {
+public class Vec {
     public double x;
     public double y;
 
-    public Position(double x, double y) {
+    public Vec(double x, double y) {
         this.x = x;
         this.y = y;
     }
