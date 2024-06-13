@@ -3,9 +3,6 @@ package com.gayloc.flappyBirdPlus;
 import javax.swing.*;
 
 public class App {
-    public static final int WIDTH = 1280;
-    public static final int HEIGHT = 720;
-
     private static void initWindow() {
         // create a window frame and set the title in the toolbar
         JFrame window = new JFrame("期末大作业的说");
@@ -24,7 +21,7 @@ public class App {
         window.setResizable(false);
         // fit the window size around the components (just our jpanel).
         // pack() should be called after setResizable() to avoid issues on some platforms
-        window.setSize(WIDTH, HEIGHT);
+        window.pack();
         // open window in the center of the screen
         window.setLocationRelativeTo(null);
         // display the window

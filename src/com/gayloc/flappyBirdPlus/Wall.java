@@ -18,20 +18,20 @@ public class Wall extends Component{
         super.render(g);
     }
 
-    static Wall createTopWall(int height) {
+    static Wall createTopWall(int height, int width) {
         return new Wall(
                 new Vec(Controller.RIGHT, Controller.TOP),
-                new Dimension(150, height+200),
-                new Vec(-5, 0),
+                new Dimension(width, height+200),
+                new Vec(Controller.WALL_SPEED, 0),
                 new Vec(0, 0)
         );
     }
 
-    static Wall createBottomWall(int height) {
+    static Wall createBottomWall(int height, int width) {
         return new Wall(
-                new Vec(Controller.RIGHT, Controller.BOTTOM-height-80),
-                new Dimension(150, height+80),
-                new Vec(-5, 0),
+                new Vec(Controller.RIGHT, Controller.BOTTOM-height),
+                new Dimension(width, height),
+                new Vec(Controller.WALL_SPEED, 0),
                 new Vec(0, 0)
         );
     }

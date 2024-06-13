@@ -4,18 +4,21 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Board extends JPanel implements ActionListener, KeyListener {
+public class Board extends JPanel implements ActionListener, KeyListener, MouseListener {
 
     private final Controller controller = new Controller();
+
+    public static final int boardWidth = 1280;
+    public static final int boardHeight = 720;
 
     private final Player player;
     private final LocationText lt;
     private final java.util.Queue<Wall> walls = controller.getWalls();
 
     public Board() {
-        int boardWidth = App.WIDTH;
-        int boardHeight = App.HEIGHT;
-        setSize(boardWidth, boardHeight);
+        int boardWidth = 1280;
+        int boardHeight = 720;
+        setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(new Color(232, 232, 232));
 
         player = controller.getPlayer();
@@ -25,6 +28,7 @@ public class Board extends JPanel implements ActionListener, KeyListener {
 
         Timer timer = new Timer(DELAY, this);
         timer.start();
+        addMouseListener(this);
     }
 
     @Override
@@ -65,17 +69,42 @@ public class Board extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // react to key down events
+        controller.startGame();
         player.jump();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // react to key up events
+
     }
 
     private void drawBackground(Graphics g) {
-        // draw a checkered background
         g.setColor(new Color(214, 214, 214));
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+        controller.startGame();
+        player.jump();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
     }
 }
