@@ -33,6 +33,15 @@ public class Controller {
     private Boolean isGameOver = false;
     private Wall lastWall = null;
 
+    public Boolean getIsGaming() {
+        return isGaming;
+    }
+
+    //必须先执行 getPlayer 才能执行此方法
+    public LocationText getLocationText() {
+        return new LocationText(new Vec(10, 20), 20, player);
+    }
+
     public Player getPlayer() {
         player = new Player(PlayerPosition, playerSize, PlayerVelocity, PlayerAcceleration);
         return player;
@@ -45,12 +54,14 @@ public class Controller {
             requestNewGame();
         }
 
+        walls.forEach(w->w.setIsPhysical(true));
         player.setIsPhysical(true);
         isGaming = true;
     }
 
     public void stopGame() {
         if (!isGaming) return;
+
         walls.forEach(w->w.setIsPhysical(false));
         player.setIsPhysical(false);
         isGaming = false;
@@ -62,6 +73,7 @@ public class Controller {
         player.setPosition(initialPlayX, initialPlayY);
         player.setAcceleration(initialAccelerationX, initialAccelerationY);
         player.setVelocity(initialVelocityX, initialVelocityY);
+        player.resetScore();
 
         while (!walls.isEmpty()) {
             walls.poll();
@@ -77,10 +89,15 @@ public class Controller {
             }
 
             walls.forEach(w -> {
-                if (player.getPosition().x+player.getSize().width > w.getPosition().x && player.getPosition().x < w.getPosition().x+w.getSize().width) {
-                    if (player.getBottomY() > w.getPosition().y && player.getPosition().y < w.getPosition().y+w.getSize().height) {
-                        isGameOver = true;
-                        stopGame();
+                if (player.isCollision(w)) {
+                    isGameOver = true;
+                    stopGame();
+                }
+
+                if (player.getPosition().x > w.getPosition().x+w.getSize().width) {
+                    if (!w.isScored()) {
+                        player.addScore();
+                        w.scored();
                     }
                 }
             });

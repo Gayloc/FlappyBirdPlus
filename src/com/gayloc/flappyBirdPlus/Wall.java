@@ -3,9 +3,20 @@ package com.gayloc.flappyBirdPlus;
 import java.awt.*;
 
 public class Wall extends Component{
+
+    private Boolean scored = false;
+
     public Wall(Vec position, Dimension size, Vec velocity, Vec acceleration) {
         super(position, size, velocity, acceleration);
         setIsPhysical(true);
+    }
+
+    public void scored() {
+        scored = true;
+    }
+
+    public boolean isScored() {
+        return scored;
     }
 
     @Override
