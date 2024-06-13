@@ -1,12 +1,42 @@
 package com.gayloc.flappyBirdPlus;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.util.Objects;
+
 
 public class Player extends Component{
-    private int score = 0;
 
-    public Player(Vec position, Dimension size, Vec velocity, Vec acceleration) {
-        super(position, size, velocity, acceleration);
+    private int score = 0;
+    private int imageCounter = 0;
+    private BufferedImage spriteSheet;
+    private BufferedImage[] frames;
+    private int currentFrame = 0;
+    private final int totalFrames = 2;
+    private final int frameWidth = 70;
+    private final int frameHeight = 60;
+
+    public Player(Vec position, Vec velocity, Vec acceleration) {
+        super(position, new Dimension(60, 50), velocity, acceleration);
+        loadSpriteSheet(); // Adjust the path to your sprite sheet
+        extractFrames();
+    }
+
+    private void loadSpriteSheet() {
+        try {
+            spriteSheet = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/bird.png")));
+        } catch (IOException e) {
+           throw new RuntimeException(e);
+        }
+    }
+
+    private void extractFrames() {
+        frames = new BufferedImage[totalFrames];
+        for (int i = 0; i < totalFrames; i++) {
+            frames[i] = spriteSheet.getSubimage(i * frameWidth, 0, frameWidth, frameHeight);
+        }
     }
 
     public void jump() {
@@ -23,5 +53,31 @@ public class Player extends Component{
 
     public void resetScore() {
         this.score = 0;
+    }
+
+    @Override
+    public void render(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        double rotationAngle = getRotationAngle();
+        int centerX = (int) (position.x + frameWidth / 2);
+        int centerY = (int) (position.y + frameHeight / 2);
+        g2d.rotate(rotationAngle, centerX, centerY);
+        g2d.drawImage(frames[currentFrame], (int) position.x, (int) position.y, null);
+        g2d.rotate(-rotationAngle, centerX, centerY);
+    }
+
+    private double getRotationAngle() {
+        // This example maps velocity.y to an angle between -45 and 45 degrees
+        double maxVelocity = 10; // Adjust this value as needed
+        double angle = (velocity.y / maxVelocity) * Math.toRadians(45);
+        return angle;
+    }
+
+    @Override
+    public void tick() {
+        imageCounter++;
+        currentFrame = (imageCounter / 10) % totalFrames;
+        super.tick();
     }
 }

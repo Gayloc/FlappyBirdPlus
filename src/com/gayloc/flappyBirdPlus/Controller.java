@@ -1,6 +1,5 @@
 package com.gayloc.flappyBirdPlus;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,8 +26,6 @@ public class Controller {
     private final Vec PlayerVelocity = new Vec(initialVelocityX, initialVelocityY);
     private final Vec PlayerAcceleration = new Vec(initialAccelerationX, initialAccelerationY);
 
-    private final Dimension playerSize = new Dimension(50, 50);
-
     private Boolean isGaming = false;
     private Boolean isGameOver = false;
     private Wall lastWall = null;
@@ -43,7 +40,7 @@ public class Controller {
     }
 
     public Player getPlayer() {
-        player = new Player(PlayerPosition, playerSize, PlayerVelocity, PlayerAcceleration);
+        player = new Player(PlayerPosition, PlayerVelocity, PlayerAcceleration);
         return player;
     }
 
