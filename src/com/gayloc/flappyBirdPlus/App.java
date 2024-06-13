@@ -5,7 +5,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class App {
-    public static Boolean displayLocation = false;
+
+    public static Boolean showLocation = false;
+    public static Boolean showBBox = false;
 
     private static void initWindow() {
 
@@ -61,13 +63,25 @@ public class App {
         aboutItem.setForeground(Color.BLACK);
         aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(null, aboutItem.getText()));
 
-        JMenuItem locationItem = new JMenuItem("启用/关闭位置显示");
+        JMenuItem locationItem = new JMenuItem("位置显示");
         locationItem.setBorder(boarder);
         locationItem.setFont(font);
         locationItem.setBackground(Color.WHITE);
         locationItem.setForeground(Color.BLACK);
-        locationItem.addActionListener(e -> displayLocation = !displayLocation);
+        locationItem.addActionListener(e -> {
+            showLocation = !showLocation;
+        });
         helpMenu.add(locationItem);
+
+        JMenuItem bboxItem = new JMenuItem("碰撞显示");
+        bboxItem.setBorder(boarder);
+        bboxItem.setFont(font);
+        bboxItem.setBackground(Color.WHITE);
+        bboxItem.setForeground(Color.BLACK);
+        bboxItem.addActionListener(e -> {
+            showBBox = !showBBox;
+        });
+        helpMenu.add(bboxItem);
 
         //放在最下面的
         fileMenu.add(exitItem);

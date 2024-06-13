@@ -19,7 +19,7 @@ public class LocationText extends Text {
 
     @Override
     public void render(Graphics g) {
-        if (!App.displayLocation) return;
+        if (!App.showLocation) return;
 
         super.render(g);
     }

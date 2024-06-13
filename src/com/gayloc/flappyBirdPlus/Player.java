@@ -1,6 +1,7 @@
 package com.gayloc.flappyBirdPlus;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class Player extends Component{
     private final int frameHeight = 60;
 
     public Player(Vec position, Vec velocity, Vec acceleration) {
-        super(position, new Dimension(60, 50), velocity, acceleration);
+        super(position, new Dimension(40, 30), velocity, acceleration);
         loadSpriteSheet(); // Adjust the path to your sprite sheet
         extractFrames();
     }
@@ -58,20 +59,24 @@ public class Player extends Component{
     @Override
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         double rotationAngle = getRotationAngle();
-        int centerX = (int) (position.x + frameWidth / 2);
-        int centerY = (int) (position.y + frameHeight / 2);
+        int centerX = (int) (position.x + size.width / 2);
+        int centerY = (int) (position.y + size.height / 2);
+
+        AffineTransform originalTransform = g2d.getTransform();
+
         g2d.rotate(rotationAngle, centerX, centerY);
-        g2d.drawImage(frames[currentFrame], (int) position.x, (int) position.y, null);
-        g2d.rotate(-rotationAngle, centerX, centerY);
+        g2d.drawImage(frames[currentFrame], (int) position.x - size.width / 2, (int) position.y - size.height / 2, frameWidth, frameHeight, null);
+        g2d.setTransform(originalTransform);
+
+        if (App.showBBox) {
+            super.render(g);
+        }
     }
 
     private double getRotationAngle() {
-        // This example maps velocity.y to an angle between -45 and 45 degrees
-        double maxVelocity = 10; // Adjust this value as needed
-        double angle = (velocity.y / maxVelocity) * Math.toRadians(45);
-        return angle;
+        double maxVelocity = 10;
+        return (velocity.y / maxVelocity) * Math.toRadians(45);
     }
 
     @Override

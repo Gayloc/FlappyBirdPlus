@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/finalExam.iml" filepath="$PROJECT_DIR$/finalExam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlappyBirdPlus.iml" filepath="$PROJECT_DIR$/FlappyBirdPlus.iml" />
     </modules>
   </component>
 </project>
