@@ -9,12 +9,11 @@ import java.util.Objects;
 public class Wall extends Component{
 
     private Boolean scored = false;
-    private BufferedImage wallImage;
+    private static BufferedImage wallImage;
 
     public Wall(Vec position, Dimension size, Vec velocity, Vec acceleration) {
         super(position, size, velocity, acceleration);
         setIsPhysical(true);
-        loadImage();
     }
 
     public void scored() {
@@ -57,9 +56,11 @@ public class Wall extends Component{
         }
     }
 
-    private void loadImage() {
+    //墙的数量较多，加载图片的步骤放在 Controller
+    public static void loadImage() {
+        System.out.println("Loading wall image");
         try {
-            wallImage = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/brick.png")));
+            wallImage = ImageIO.read(Objects.requireNonNull(Wall.class.getResource("/images/brick.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

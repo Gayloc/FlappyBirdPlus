@@ -39,6 +39,7 @@ public class Controller {
     
     public Controller() {
         loadGameoverClip();
+        Wall.loadImage();
     }
 
     public void loadGameoverClip() {

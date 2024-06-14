@@ -42,6 +42,7 @@ public class Player extends Component{
     }
 
     private void loadSpriteSheet() {
+        System.out.println("Loading Sprite Sheet");
         try {
             spriteSheet = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/bird.png")));
         } catch (IOException e) {
