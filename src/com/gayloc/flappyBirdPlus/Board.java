@@ -19,8 +19,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
     private final HintText hintText;
 
     public Board() {
-        int boardWidth = 1280;
-        int boardHeight = 720;
+
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(new Color(232, 232, 232));
 

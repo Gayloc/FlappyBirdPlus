@@ -1,8 +1,11 @@
 package com.gayloc.flappyBirdPlus;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class App {
 
@@ -11,7 +14,7 @@ public class App {
 
     private static void initWindow() {
 
-        JFrame window = new JFrame("家吧扑棱飞");
+        JFrame window = new JFrame("FlappyBirdPlus");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Board board = new Board();
@@ -22,6 +25,13 @@ public class App {
 
         window.addKeyListener(board);
         window.addMouseListener(board);
+
+        try {
+            window.setIconImage(ImageIO.read(Objects.requireNonNull(App.class.getResource("/images/icon.png"))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         window.setResizable(false);
         window.pack();
         window.setLocationRelativeTo(null);

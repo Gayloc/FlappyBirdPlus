@@ -5,7 +5,7 @@ import java.awt.*;
 public class HintText extends Text {
 
 public HintText() {
-        super(new Vec((double) (Board.boardWidth - 12 * 30) /2,500), 30, "点击屏幕或任意键开始游戏", Color.white, new Font("微软雅黑", Font.BOLD, 30));
+        super(new Vec((double) (Board.boardWidth - 12 * 30) /2,Board.boardHeight-300), 30, "点击屏幕或任意键开始游戏", Color.white, new Font("微软雅黑", Font.BOLD, 30));
     }
 
     @Override
