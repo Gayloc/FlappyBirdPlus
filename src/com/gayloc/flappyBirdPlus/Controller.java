@@ -1,6 +1,9 @@
 package com.gayloc.flappyBirdPlus;
 
+import javax.sound.sampled.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -31,6 +34,24 @@ public class Controller {
     private static Boolean isGaming = false;
     private static Boolean isGameOver = false;
     private Wall lastWall = null;
+
+    private Clip gameoverClip;
+    
+    public Controller() {
+        loadGameoverClip();
+    }
+
+    public void loadGameoverClip() {
+        System.out.println("Loading game over clip");
+        try {
+            File soundFile = new File("src/resources/sounds/gameover.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            gameoverClip = AudioSystem.getClip();
+            gameoverClip.open(audioInputStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static Boolean getIsGameOver() {
         return isGameOver;
@@ -91,18 +112,26 @@ public class Controller {
 
         background.position.x = 0;
     }
+    
+    private void gameOver() {
+        if (gameoverClip.isRunning()) {
+            gameoverClip.stop();
+        }
+        gameoverClip.setFramePosition(0);
+        gameoverClip.start();
+        isGameOver = true;
+        stopGame();
+    }
 
     public void tick() {
         if (isGaming) {
             if (player.getBottomY() > BOTTOM || player.getPosition().y < TOP) {
-                isGameOver = true;
-                stopGame();
+                gameOver();
             }
 
             walls.forEach(w -> {
                 if (player.isCollision(w)) {
-                    isGameOver = true;
-                    stopGame();
+                    gameOver();
                 }
 
                 if (player.getPosition().x > w.getPosition().x+w.getSize().width) {

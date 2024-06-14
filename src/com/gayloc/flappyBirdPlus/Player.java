@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -12,6 +14,7 @@ public class Player extends Component{
 
     private int score = 0;
     private int imageCounter = 0;
+    private Clip clip;
     private BufferedImage spriteSheet;
     private BufferedImage[] frames;
     private int currentFrame = 0;
@@ -21,8 +24,21 @@ public class Player extends Component{
 
     public Player(Vec position, Vec velocity, Vec acceleration) {
         super(position, new Dimension(40, 30), velocity, acceleration);
-        loadSpriteSheet(); // Adjust the path to your sprite sheet
+        loadSpriteSheet();
+        loadJumpSound();
         extractFrames();
+    }
+
+    private void loadJumpSound() {
+        System.out.println("Loading Jump Sound");
+        try {
+            File soundFile = new File("src/resources/sounds/jump.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void loadSpriteSheet() {
@@ -41,6 +57,11 @@ public class Player extends Component{
     }
 
     public void jump() {
+        if (clip.isRunning()) {
+            clip.stop(); // 停止当前正在播放的音效
+        }
+        clip.setFramePosition(0); // 重置音效播放位置
+        clip.start(); // 播放音效
         this.velocity.y = -10;
     }
 
@@ -60,8 +81,8 @@ public class Player extends Component{
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         double rotationAngle = getRotationAngle();
-        int centerX = (int) (position.x + size.width / 2);
-        int centerY = (int) (position.y + size.height / 2);
+        int centerX = (int) (position.x + (double) size.width / 2);
+        int centerY = (int) (position.y + (double) size.height / 2);
 
         AffineTransform originalTransform = g2d.getTransform();
 
