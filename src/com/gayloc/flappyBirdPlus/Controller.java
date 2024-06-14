@@ -1,5 +1,6 @@
 package com.gayloc.flappyBirdPlus;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,6 +8,7 @@ public class Controller {
 
     private Player player;
     private final Queue<Wall> walls = new LinkedList<>();
+    private final Background background = new Background(new Vec(0, 0), new Dimension(Board.boardWidth, Board.boardHeight), new Vec(Controller.WALL_SPEED, 0), new Vec(0, 0));
 
     public static final int TOP = -200;
     public static final int BOTTOM = Board.boardHeight;
@@ -26,11 +28,19 @@ public class Controller {
     private final Vec PlayerVelocity = new Vec(initialVelocityX, initialVelocityY);
     private final Vec PlayerAcceleration = new Vec(initialAccelerationX, initialAccelerationY);
 
-    private Boolean isGaming = false;
-    private Boolean isGameOver = false;
+    private static Boolean isGaming = false;
+    private static Boolean isGameOver = false;
     private Wall lastWall = null;
 
-    public Boolean getIsGaming() {
+    public static Boolean getIsGameOver() {
+        return isGameOver;
+    }
+
+    public Background getBackground() {
+        return background;
+    }
+
+    public static Boolean getIsGaming() {
         return isGaming;
     }
 
@@ -53,6 +63,7 @@ public class Controller {
 
         walls.forEach(w->w.setIsPhysical(true));
         player.setIsPhysical(true);
+        background.setIsPhysical(true);
         isGaming = true;
     }
 
@@ -61,6 +72,7 @@ public class Controller {
 
         walls.forEach(w->w.setIsPhysical(false));
         player.setIsPhysical(false);
+        background.setIsPhysical(false);
         isGaming = false;
     }
 
@@ -76,6 +88,8 @@ public class Controller {
             walls.poll();
         }
         lastWall = null;
+
+        background.position.x = 0;
     }
 
     public void tick() {

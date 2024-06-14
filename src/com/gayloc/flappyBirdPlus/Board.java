@@ -15,6 +15,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
     private final LocationText lt;
     private final java.util.Queue<Wall> walls = controller.getWalls();
     private final ScoreText scoreText;
+    private final Background background;
 
     public Board() {
         int boardWidth = 1280;
@@ -25,6 +26,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         player = controller.getPlayer();
         lt = controller.getLocationText();
         scoreText = new ScoreText(player);
+        background = controller.getBackground();
 
         int DELAY = 5;
 
@@ -44,6 +46,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         walls.forEach(Wall::tick);
         scoreText.tick();
         controller.tick();
+        background.tick();
         // calling repaint() will trigger paintComponent() to run again,
         // which will refresh/redraw the graphics.
         repaint();
@@ -53,8 +56,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // draw our graphics.
-        drawBackground(g);
+        background.render(g);
         player.render(g);
         lt.render(g);
         walls.forEach(w -> w.render(g));
@@ -71,7 +73,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (controller.getIsGaming()) {
+        if (Controller.getIsGaming()) {
             player.jump();
         } else {
             controller.startGame();
@@ -83,10 +85,6 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
 
     }
 
-    private void drawBackground(Graphics g) {
-        g.setColor(new Color(214, 214, 214));
-    }
-
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
@@ -94,7 +92,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        if (controller.getIsGaming()) {
+        if (Controller.getIsGaming()) {
             player.jump();
         } else {
             controller.startGame();
@@ -113,6 +111,6 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-        controller.stopGame();
+        ;
     }
 }

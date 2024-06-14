@@ -81,8 +81,10 @@ public class Player extends Component{
 
     @Override
     public void tick() {
-        imageCounter++;
-        currentFrame = (imageCounter / 10) % totalFrames;
+        if (!Controller.getIsGameOver()) {
+            imageCounter++;
+            currentFrame = (imageCounter / 10) % totalFrames;
+        }
         super.tick();
     }
 }
