@@ -26,7 +26,7 @@ public class Background extends Component{
 
     private void loadImage() {
         try {
-            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/background.jpg")));
+            background = ImageIO.read(Objects.requireNonNull(getClass().getResource("/images/background.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

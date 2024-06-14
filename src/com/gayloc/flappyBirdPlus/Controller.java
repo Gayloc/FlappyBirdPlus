@@ -121,8 +121,8 @@ public class Controller {
     private void buildWalls() {
         int topWallHeight = 250;
         int bottomWallHeight = 250;
-        int topWallWidth = 150;
-        int bottomWallWidth = 150;
+        int topWallWidth = 128;
+        int bottomWallWidth = 128;
 
         if (lastWall != null) {
             if (lastWall.getPosition().x < RIGHT-500-lastWall.getSize().width) {

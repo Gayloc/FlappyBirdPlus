@@ -14,11 +14,11 @@ public class App {
         JFrame window = new JFrame("家吧扑棱飞");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JMenuBar menuBar = getMenuBar();
-        window.setJMenuBar(menuBar);
-
         Board board = new Board();
         window.add(board);
+
+        JMenuBar menuBar = getMenuBar();
+        window.setJMenuBar(menuBar);
 
         window.addKeyListener(board);
         window.addMouseListener(board);
