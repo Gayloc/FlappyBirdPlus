@@ -159,14 +159,20 @@ public class Controller {
     }
 
     private void buildSingleWall() {
-        int topWallHeight = 250;
-        int bottomWallHeight = 250;
-        int topWallWidth = 128;
-        int bottomWallWidth = 128;
+        int minGap = 150;
+        int maxGap = 200;
+        int gapHeight = minGap + (int)(Math.random() * (maxGap - minGap + 1));
 
-        lastWall = Wall.createTopWall(topWallHeight, topWallWidth);
+        int minWallHeight = 100;
+        int maxWallHeight = Board.boardHeight - minGap - minWallHeight;
+        int topWallHeight = minWallHeight / 2 + (int)(Math.random() * (maxWallHeight - minWallHeight + 1));
+        int bottomWallHeight = Board.boardHeight - topWallHeight - gapHeight;
+
+        int wallWidth = 128;
+
+        lastWall = Wall.createTopWall(topWallHeight, wallWidth);
         walls.add(lastWall);
-        walls.add(Wall.createBottomWall(bottomWallHeight, bottomWallWidth));
+        walls.add(Wall.createBottomWall(bottomWallHeight, wallWidth));
     }
 
     private void destroyWalls() {

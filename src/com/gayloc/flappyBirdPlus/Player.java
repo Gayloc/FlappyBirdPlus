@@ -67,7 +67,7 @@ public class Player extends Component{
     }
 
     public int getScore() {
-        return score;
+        return score/2;
     }
 
     public void addScore() {
