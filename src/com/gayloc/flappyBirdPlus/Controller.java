@@ -119,22 +119,24 @@ public class Controller {
     }
 
     private void buildWalls() {
+        if (lastWall != null) {
+            if (lastWall.getPosition().x < RIGHT-500-lastWall.getSize().width) {
+                buildSingleWall();
+            }
+        } else {
+            buildSingleWall();
+        }
+    }
+
+    private void buildSingleWall() {
         int topWallHeight = 250;
         int bottomWallHeight = 250;
         int topWallWidth = 128;
         int bottomWallWidth = 128;
 
-        if (lastWall != null) {
-            if (lastWall.getPosition().x < RIGHT-500-lastWall.getSize().width) {
-                lastWall = Wall.createTopWall(topWallHeight, topWallWidth);
-                walls.add(lastWall);
-                walls.add(Wall.createBottomWall(bottomWallHeight, bottomWallWidth));
-            }
-        } else {
-            lastWall = Wall.createTopWall(topWallHeight, topWallWidth);
-            walls.add(lastWall);
-            walls.add(Wall.createBottomWall(bottomWallHeight, bottomWallWidth));
-        }
+        lastWall = Wall.createTopWall(topWallHeight, topWallWidth);
+        walls.add(lastWall);
+        walls.add(Wall.createBottomWall(bottomWallHeight, bottomWallWidth));
     }
 
     private void destroyWalls() {

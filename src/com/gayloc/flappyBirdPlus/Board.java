@@ -115,6 +115,6 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-        ;
+
     }
 }

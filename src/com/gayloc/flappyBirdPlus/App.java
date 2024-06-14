@@ -68,9 +68,7 @@ public class App {
         locationItem.setFont(font);
         locationItem.setBackground(Color.WHITE);
         locationItem.setForeground(Color.BLACK);
-        locationItem.addActionListener(e -> {
-            showLocation = !showLocation;
-        });
+        locationItem.addActionListener(e -> showLocation = !showLocation);
         helpMenu.add(locationItem);
 
         JMenuItem bboxItem = new JMenuItem("碰撞显示");
@@ -78,9 +76,7 @@ public class App {
         bboxItem.setFont(font);
         bboxItem.setBackground(Color.WHITE);
         bboxItem.setForeground(Color.BLACK);
-        bboxItem.addActionListener(e -> {
-            showBBox = !showBBox;
-        });
+        bboxItem.addActionListener(e -> showBBox = !showBBox);
         helpMenu.add(bboxItem);
 
         //放在最下面的
@@ -97,10 +93,6 @@ public class App {
         // blocking the GUI. https://stackoverflow.com/a/22534931/4655368
         // this is a lot of boilerplate code that you shouldn't be too concerned about.
         // just know that when main runs it will call initWindow() once.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                initWindow();
-            }
-        });
+        SwingUtilities.invokeLater(App::initWindow);
     }
 }

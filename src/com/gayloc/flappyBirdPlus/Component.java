@@ -26,14 +26,6 @@ public abstract class Component {
         this.isPhysical = isPhysical;
     }
 
-    public void moveX(int x) {
-        position.x += position.x;
-    }
-
-    public void moveY(int y) {
-        position.y += position.y;
-    }
-
     public void tick() {
         if (isPhysical) {
             velocity.x += acceleration.x;
