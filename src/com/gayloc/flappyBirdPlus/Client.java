@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import com.gayloc.flappyBirdPlusServer.User;
+import javax.swing.*;
 
 public class Client {
     private static final String BASE_URL = "http://localhost:8000";
@@ -86,14 +86,17 @@ public class Client {
     public int getScore(String name) {
         String userScoreResponse = null;
         try {
-            userScoreResponse = sendGetRequest("/getUserScore?name=John");
+            userScoreResponse = sendGetRequest("/getUserScore?name="+name);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        int userScore = gson.fromJson(userScoreResponse, Integer.class);
-        System.out.println("User Score Response: " + userScore);
 
-        return userScore;
+        if (userScoreResponse == null) {
+            JOptionPane.showMessageDialog(null, "网络连接错误", "错误", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
+
+        return gson.fromJson(userScoreResponse, Integer.class);
     }
 
     public boolean deleteScore(String name) {

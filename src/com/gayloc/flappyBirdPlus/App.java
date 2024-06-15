@@ -12,6 +12,8 @@ public class App {
     public static Boolean showLocation = false;
     public static Boolean showBBox = false;
 
+    private static User user;
+
     private static void initWindow() {
 
         JFrame window = new JFrame("FlappyBirdPlus");
@@ -98,7 +100,23 @@ public class App {
         return menuBar;
     }
 
+    public static User getUser() {
+        return user;
+    }
+
     public static void main(String[] args) {
+        Client client = new Client();
+
+        user = client.getFromLocal();
+        if (user == null) {
+            InputName inputName = new InputName(true);
+            int score = client.getScore(inputName.getInput());
+            client.saveToLocal(new User(inputName.getInput(), score));
+            user = client.getFromLocal();
+        } else {
+            user.setScore(client.getScore(user.getName()));
+        }
+
         // https://stackoverflow.com/a/22534931/4655368
         SwingUtilities.invokeLater(App::initWindow);
     }

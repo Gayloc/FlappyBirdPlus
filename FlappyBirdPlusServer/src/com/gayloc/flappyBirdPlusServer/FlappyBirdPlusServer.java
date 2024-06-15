@@ -28,6 +28,7 @@ public class FlappyBirdPlusServer {
         server.start();
         System.out.println("Server started on port 8000");
 
+        commandLine();
         server.stop(0);
     }
 

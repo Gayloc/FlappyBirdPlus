@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FlappyBirdPlus.iml" filepath="$PROJECT_DIR$/FlappyBirdPlus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlappyBirdPlusServer/FlappyBirdPlusServer.iml" filepath="$PROJECT_DIR$/FlappyBirdPlusServer/FlappyBirdPlusServer.iml" />
     </modules>
   </component>
 </project>

@@ -17,6 +17,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
     private final ScoreText scoreText;
     private final Background background;
     private final HintText hintText;
+    private final BestScoreText bestScoreText;
 
     public Board() {
 
@@ -28,6 +29,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         scoreText = new ScoreText(player);
         background = controller.getBackground();
         hintText = new HintText();
+        bestScoreText = new BestScoreText(App.getUser());
 
         int DELAY = 5;
 
@@ -45,6 +47,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         controller.tick();
         background.tick();
         hintText.tick();
+        bestScoreText.tick();
 
         repaint();
     }
@@ -59,6 +62,7 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         walls.forEach(w -> w.render(g));
         scoreText.render(g);
         hintText.render(g);
+        bestScoreText.render(g);
 
         /*
          * Toolkit.getDefaultToolkit().sync() 这行代码的作用是在某些系统上同步图形输出，确保绘制的内容立即显示，特别是在使用双缓冲机制时。它可以减少图形卡和显示器之间的延迟，提高动画的流畅性。以下是一个详细的解释：
