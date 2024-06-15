@@ -13,13 +13,14 @@ public class App {
     public static Boolean showBBox = false;
 
     private static User user;
+    private static Client client;
 
     private static void initWindow() {
 
         JFrame window = new JFrame("FlappyBirdPlus");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Board board = new Board();
+        Board board = new Board(client);
         window.add(board);
 
         JMenuBar menuBar = getMenuBar();
@@ -61,6 +62,12 @@ public class App {
         helpMenu.setFont(font);
         helpMenu.setBorder(boarder);
 
+        JMenu rankMenu = new JMenu("排行榜");
+        rankMenu.setBackground(Color.WHITE);
+        rankMenu.setForeground(Color.BLACK);
+        rankMenu.setFont(font);
+        rankMenu.setBorder(boarder);
+
         JMenuItem exitItem = new JMenuItem("退出");
         exitItem.addActionListener(e -> System.exit(0));
         exitItem.setFont(font);
@@ -91,13 +98,35 @@ public class App {
         bboxItem.addActionListener(e -> showBBox = !showBBox);
         helpMenu.add(bboxItem);
 
+        JMenuItem setNameItem = getSetNameItem(boarder, font);
+        rankMenu.add(setNameItem);
+
         //放在最下面的
         fileMenu.add(exitItem);
         helpMenu.add(aboutItem);
 
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
+        menuBar.add(rankMenu);
         return menuBar;
+    }
+
+    private static JMenuItem getSetNameItem(EmptyBorder boarder, Font font) {
+        JMenuItem setNameItem = new JMenuItem("修改姓名");
+        setNameItem.setBorder(boarder);
+        setNameItem.setFont(font);
+        setNameItem.setBackground(Color.WHITE);
+        setNameItem.setForeground(Color.BLACK);
+        setNameItem.addActionListener(e -> {
+            InputName inputName = new InputName(false);
+            if (inputName.getChoice()) {
+                int score = client.getScore(inputName.getInput());
+                client.saveToLocal(new User(inputName.getInput(), score));
+                user = client.getFromLocal();
+                Board.getBestScoreText().updateUser(user);
+            }
+        });
+        return setNameItem;
     }
 
     public static User getUser() {
@@ -105,7 +134,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Client client = new Client();
+        client = new Client();
 
         user = client.getFromLocal();
         if (user == null) {

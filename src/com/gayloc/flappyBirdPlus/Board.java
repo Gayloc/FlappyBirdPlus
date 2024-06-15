@@ -6,20 +6,27 @@ import javax.swing.*;
 
 public class Board extends JPanel implements ActionListener, KeyListener, MouseListener {
 
-    private final Controller controller = new Controller();
+    private final Controller controller;
 
     public static final int boardWidth = 1280;
     public static final int boardHeight = 720;
 
     private final Player player;
     private final LocationText lt;
-    private final java.util.Queue<Wall> walls = controller.getWalls();
+    private final java.util.Queue<Wall> walls;
     private final ScoreText scoreText;
     private final Background background;
     private final HintText hintText;
-    private final BestScoreText bestScoreText;
 
-    public Board() {
+    private static BestScoreText bestScoreText = null;
+
+    public static BestScoreText getBestScoreText() {
+        return bestScoreText;
+    }
+
+    public Board(Client c) {
+        controller = new Controller(c);
+        walls = controller.getWalls();
 
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(new Color(232, 232, 232));

@@ -10,9 +10,14 @@ public class InputName extends JDialog {
     private JTextField textField;
 
     private final boolean isForce;
+    private boolean choice = false;
 
     public String getInput() {
         return textField.getText();
+    }
+
+    public boolean getChoice() {
+        return choice;
     }
 
     public InputName(boolean isForceParam) {
@@ -51,11 +56,17 @@ public class InputName extends JDialog {
 
         this.pack();
         this.setLocationRelativeTo(null);
+        this.setTitle("设置姓名");
         this.setVisible(true);
     }
 
     private void onOK() {
-        // 在此处添加您的代码
+        if (textField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "请输入姓名");
+            return;
+        }
+
+        choice = true;
         dispose();
     }
 
@@ -64,6 +75,7 @@ public class InputName extends JDialog {
             JOptionPane.showMessageDialog(contentPane, "请输入姓名");
             return;
         }
+        choice = false;
         dispose();
     }
 }

@@ -1,8 +1,8 @@
 package com.gayloc.flappyBirdPlus;
 
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -37,8 +37,11 @@ public class Controller {
     private Wall lastWall = null;
 
     private Clip gameoverClip;
+
+    private Client client;
     
-    public Controller() {
+    public Controller(Client client) {
+        this.client = client;
         loadGameoverClip();
         Wall.loadImage();
     }
@@ -122,6 +125,16 @@ public class Controller {
         gameoverClip.start();
         isGameOver = true;
         stopGame();
+
+        if (App.getUser().getScore()<player.getScore()) {
+            App.getUser().setScore(player.getScore());
+            client.saveToLocal(App.getUser());
+            JOptionPane.showMessageDialog(null, "新的最高分记录，将上传成绩到排行榜");
+
+            if (!client.addScore(App.getUser())) {
+                JOptionPane.showMessageDialog(null, "上传失败", "错误", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public void tick() {

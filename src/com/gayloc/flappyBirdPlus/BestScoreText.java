@@ -10,6 +10,10 @@ public class BestScoreText extends Text {
         this.user = user;
     }
 
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public void tick() {
         super.tick();

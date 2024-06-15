@@ -7,7 +7,9 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -33,8 +35,8 @@ public class FlappyBirdPlusServer {
     }
 
     private static void commandLine() {
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             String command = scanner.nextLine();
             if (command.equals("stop")) {
                 controller.stop();
@@ -49,15 +51,13 @@ public class FlappyBirdPlusServer {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equals(exchange.getRequestMethod())) {
-                String[] params = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8).split("&");
-                String name = params[0].split("=")[1];
-                int score = Integer.parseInt(params[1].split("=")[1]);
-
-                User user = new User(name, score);
+                Reader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
+                User user = gson.fromJson(reader, User.class);
                 boolean result = controller.addScore(user);
 
                 String response = gson.toJson(result);
-                exchange.sendResponseHeaders(200, response.length());
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
@@ -74,7 +74,8 @@ public class FlappyBirdPlusServer {
                 User[] topUsers = controller.getTopUsers();
 
                 String response = gson.toJson(topUsers);
-                exchange.sendResponseHeaders(200, response.length());
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
@@ -93,7 +94,8 @@ public class FlappyBirdPlusServer {
                 int score = controller.getUserScore(userName);
                 String response = gson.toJson(score);
 
-                exchange.sendResponseHeaders(200, response.length());
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
@@ -107,12 +109,14 @@ public class FlappyBirdPlusServer {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equals(exchange.getRequestMethod())) {
-                String userName = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8).split("=")[1];
+                Reader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
+                String userName = gson.fromJson(reader, String.class);
 
                 boolean result = controller.removeScore(userName);
                 String response = gson.toJson(result);
 
-                exchange.sendResponseHeaders(200, response.length());
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
                 os.close();

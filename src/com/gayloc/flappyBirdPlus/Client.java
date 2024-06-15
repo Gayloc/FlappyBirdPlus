@@ -103,7 +103,7 @@ public class Client {
         boolean result = false;
         String removeScoreResponse = null;
         try {
-            removeScoreResponse = sendPostRequest("/removeScore", Map.of("name", "John"));
+            removeScoreResponse = sendPostRequest("/removeScore", Map.of("name", name));
             result = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -124,22 +124,16 @@ public class Client {
         return response.body();
     }
 
-    private static String sendPostRequest(String endpoint, Map<String, String> params) throws Exception {
-        StringBuilder form = new StringBuilder();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            if (!form.isEmpty()) {
-                form.append("&");
-            }
-            form.append(entry.getKey()).append("=").append(entry.getValue());
-        }
+    private static String sendPostRequest(String endpoint, Map<String, Object> params) throws Exception {
+        String json = gson.toJson(params);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(BASE_URL + endpoint))
-                .POST(BodyPublishers.ofString(form.toString()))
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(BodyPublishers.ofString(json))
+                .header("Content-Type", "application/json")
                 .build();
 
-        HttpResponse<String> response = Client.client.send(request, BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         return response.body();
     }
 
