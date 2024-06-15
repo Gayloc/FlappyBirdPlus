@@ -117,8 +117,8 @@ public class App {
         helpMenu.add(aboutItem);
 
         menuBar.add(fileMenu);
-        menuBar.add(helpMenu);
         menuBar.add(rankMenu);
+        menuBar.add(helpMenu);
         return menuBar;
     }
 
