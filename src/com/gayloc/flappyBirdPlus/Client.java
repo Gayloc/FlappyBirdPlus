@@ -19,9 +19,13 @@ import java.util.Map;
 import javax.swing.*;
 
 public class Client {
-    private static final String BASE_URL = "http://localhost:8000";
+    private static String BASE_URL;
     private static final Gson gson = new Gson();
     private static final HttpClient client = HttpClient.newHttpClient();
+
+    Client(String url) {
+        BASE_URL = url;
+    }
 
     public void saveToLocal(User user) {
         String content = gson.toJson(user);

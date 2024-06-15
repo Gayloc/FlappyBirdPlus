@@ -165,7 +165,11 @@ public class App {
     }
 
     public static void main(String[] args) {
-        client = new Client();
+        if (Objects.equals(args[0], "test")) {
+            client = new Client("http://localhost:8000");
+        } else {
+            client = new Client("http://47.115.212.24:8000");
+        }
 
         user = client.getFromLocal();
         if (user == null) {
