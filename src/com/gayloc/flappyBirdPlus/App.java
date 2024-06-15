@@ -165,11 +165,14 @@ public class App {
     }
 
     public static void main(String[] args) {
-        if (Objects.equals(args[0], "test")) {
-            client = new Client("http://localhost:8000");
-        } else {
-            client = new Client("http://47.115.212.24:8000");
+        String serverUrl = "http://47.115.212.24:8000";
+
+        if (args.length != 0) {
+            if (Objects.equals(args[0], "test")) {
+                serverUrl = "http://localhost:8000";
+            }
         }
+        client = new Client(serverUrl);
 
         user = client.getFromLocal();
         if (user == null) {
