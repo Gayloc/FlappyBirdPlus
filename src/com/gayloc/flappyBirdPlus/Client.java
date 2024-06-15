@@ -66,6 +66,7 @@ public class Client {
             return topUsers.toArray(new User[0]);
         }
 
+        JOptionPane.showMessageDialog(null, "获取数据失败", "错误", JOptionPane.ERROR_MESSAGE);
         return new User[0];
     }
 

@@ -72,10 +72,10 @@ public class FlappyBirdPlusServer {
                 User[] topUsers = controller.getTopUsers();
 
                 String response = gson.toJson(topUsers);
-                exchange.getResponseHeaders().set("Content-Type", "application/json");
-                exchange.sendResponseHeaders(200, response.getBytes().length);
+                exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+                exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
                 OutputStream os = exchange.getResponseBody();
-                os.write(response.getBytes());
+                os.write(response.getBytes(StandardCharsets.UTF_8));
                 os.close();
             } else {
                 exchange.sendResponseHeaders(405, -1); // Method Not Allowed

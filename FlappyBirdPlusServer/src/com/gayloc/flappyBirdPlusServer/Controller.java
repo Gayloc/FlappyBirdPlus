@@ -39,20 +39,39 @@ public class Controller implements Server {
 
     @Override
     public boolean addScore(User user) {
-        String sql = "INSERT OR REPLACE INTO USER(NAME, SCORE) VALUES(?,?)";
         boolean result = false;
+        String selectSql = "SELECT COUNT(*) FROM USER WHERE NAME = ?";
+        String updateSql = "UPDATE USER SET SCORE = ? WHERE NAME = ?";
+        String insertSql = "INSERT INTO USER(NAME, SCORE) VALUES(?, ?)";
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, user.getName());
-            stmt.setInt(2, user.getScore());
-            stmt.executeUpdate();
-            result = true;
+        try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+            selectStmt.setString(1, user.getName());
+            ResultSet rs = selectStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                    updateStmt.setInt(1, user.getScore());
+                    updateStmt.setString(2, user.getName());
+                    updateStmt.executeUpdate();
+                    result = true;
+                }
+            } else {
+                try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                    insertStmt.setString(1, user.getName());
+                    insertStmt.setInt(2, user.getScore());
+                    insertStmt.executeUpdate();
+                    result = true;
+                }
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         return result;
     }
+
 
     @Override
     public User[] getTopUsers() {

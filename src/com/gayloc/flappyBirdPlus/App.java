@@ -104,6 +104,14 @@ public class App {
         JMenuItem setNameItem = getSetNameItem(boarder, font);
         rankMenu.add(setNameItem);
 
+        JMenuItem rankingTableItem = new JMenuItem("查看排行榜");
+        rankingTableItem.setBorder(boarder);
+        rankingTableItem.setFont(font);
+        rankingTableItem.setBackground(Color.WHITE);
+        rankingTableItem.setForeground(Color.BLACK);
+        rankingTableItem.addActionListener(e -> new RankingTable(client));
+        rankMenu.add(rankingTableItem);
+
         //放在最下面的
         fileMenu.add(exitItem);
         helpMenu.add(aboutItem);
