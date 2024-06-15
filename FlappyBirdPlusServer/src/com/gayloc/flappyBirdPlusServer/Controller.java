@@ -9,6 +9,15 @@ public class Controller implements Server {
 
     public Controller() {
         start();
+        String createTableSql = "CREATE TABLE IF NOT EXISTS USER ("
+                + "NAME TEXT PRIMARY KEY, "
+                + "SCORE INTEGER"
+                + ")";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
