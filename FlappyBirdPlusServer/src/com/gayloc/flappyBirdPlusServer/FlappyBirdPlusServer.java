@@ -92,7 +92,7 @@ public class FlappyBirdPlusServer {
                 int score = controller.getUserScore(userName);
                 String response = gson.toJson(score);
 
-                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
@@ -129,7 +129,7 @@ public class FlappyBirdPlusServer {
                 boolean result = controller.removeScore(userName);
                 String response = gson.toJson(result);
 
-                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
