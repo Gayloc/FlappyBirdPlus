@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
 
 public class Controller {
@@ -45,8 +46,7 @@ public class Controller {
     public void loadGameoverClip() {
         System.out.println("Loading game over clip");
         try {
-            File soundFile = new File("src/resources/sounds/gameover.wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/resources/sounds/gameover.wav")));
             gameoverClip = AudioSystem.getClip();
             gameoverClip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

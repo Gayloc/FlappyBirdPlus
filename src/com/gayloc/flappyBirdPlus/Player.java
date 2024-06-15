@@ -32,8 +32,7 @@ public class Player extends Component{
     private void loadJumpSound() {
         System.out.println("Loading Jump Sound");
         try {
-            File soundFile = new File("src/resources/sounds/jump.wav");
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("/resources/sounds/jump.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

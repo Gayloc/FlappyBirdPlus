@@ -4,6 +4,7 @@
     <root id="archive" name="finalExam.jar">
       <element id="module-output" name="FlappyBirdPlus" />
       <element id="dir-copy" path="$PROJECT_DIR$/src/resources" />
+      <element id="library" level="project" name="google.code.gson" />
     </root>
   </artifact>
 </component>
