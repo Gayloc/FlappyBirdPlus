@@ -108,8 +108,8 @@ public class Client {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        boolean removeScore = gson.fromJson(removeScoreResponse, Boolean.class);
-        System.out.println("Remove Score Response: " + removeScore);
+
+        gson.fromJson(removeScoreResponse, Boolean.class);
 
         return result;
     }

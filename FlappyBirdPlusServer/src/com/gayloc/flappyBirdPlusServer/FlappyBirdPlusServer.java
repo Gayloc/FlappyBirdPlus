@@ -6,12 +6,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Scanner;
 
 public class FlappyBirdPlusServer {
@@ -109,8 +107,24 @@ public class FlappyBirdPlusServer {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             if ("POST".equals(exchange.getRequestMethod())) {
+                // 打印请求方法
+                System.out.println("Request Method: " + exchange.getRequestMethod());
+
                 Reader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
-                String userName = gson.fromJson(reader, String.class);
+
+                // 打印请求体内容
+                StringBuilder body = new StringBuilder();
+                int c;
+                while ((c = reader.read()) != -1) {
+                    body.append((char) c);
+                }
+                String requestBody = body.toString();
+                System.out.println("Request Body: " + requestBody);
+
+                // 重新创建 Reader 来解析 JSON
+                reader = new StringReader(requestBody);
+                String userName = (String) gson.fromJson(reader, Map.class).get("name");
+                System.out.println("Parsed userName: " + userName);
 
                 boolean result = controller.removeScore(userName);
                 String response = gson.toJson(result);

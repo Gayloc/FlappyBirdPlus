@@ -98,6 +98,9 @@ public class App {
         bboxItem.addActionListener(e -> showBBox = !showBBox);
         helpMenu.add(bboxItem);
 
+        JMenuItem deleteScoreItem = getDeleteScoreItem(boarder, font);
+        rankMenu.add(deleteScoreItem);
+
         JMenuItem setNameItem = getSetNameItem(boarder, font);
         rankMenu.add(setNameItem);
 
@@ -109,6 +112,26 @@ public class App {
         menuBar.add(helpMenu);
         menuBar.add(rankMenu);
         return menuBar;
+    }
+
+    private static JMenuItem getDeleteScoreItem(EmptyBorder boarder, Font font) {
+        JMenuItem deleteScoreItem = new JMenuItem("删除分数记录");
+        deleteScoreItem.setBorder(boarder);
+        deleteScoreItem.setFont(font);
+        deleteScoreItem.setBackground(Color.WHITE);
+        deleteScoreItem.setForeground(Color.BLACK);
+        deleteScoreItem.addActionListener(e -> {
+            int selection = JOptionPane.showConfirmDialog(null, "确认删除分数");
+            if (selection == 0) {
+                if (client.deleteScore(user.getName())) {
+                    JOptionPane.showMessageDialog(null, "删除成功");
+                    user.setScore(0);
+                    client.saveToLocal(user);
+                    Board.getBestScoreText().updateUser(user);
+                }
+            }
+        });
+        return deleteScoreItem;
     }
 
     private static JMenuItem getSetNameItem(EmptyBorder boarder, Font font) {
