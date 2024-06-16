@@ -17,8 +17,6 @@ public class HintText extends Text {
 
     /**
     * {@code @Description} 构造函数，初始化文本样式
-    * {@code @Param}
-    * {@code @return}
     * {@code @Author} 古佳乐
     * {@code @Date} 2024/6/14-下午1:05
     */
