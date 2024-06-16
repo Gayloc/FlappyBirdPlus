@@ -11,6 +11,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Client {
     public void saveToLocal(User user) {
         String content = gson.toJson(user);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("user.json"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("user.json", StandardCharsets.UTF_8))) {
             writer.write(content);
             System.out.println("文件写入成功！");
         } catch (IOException e) {
@@ -43,7 +44,7 @@ public class Client {
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            List<String> lines = Files.readAllLines(Paths.get("user.json"));
+            List<String> lines = Files.readAllLines(Paths.get("user.json"), StandardCharsets.UTF_8);
             for (String line : lines) {
                 stringBuilder.append(line);
             }
