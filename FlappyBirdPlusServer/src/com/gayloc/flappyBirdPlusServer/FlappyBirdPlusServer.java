@@ -92,6 +92,8 @@ public class FlappyBirdPlusServer {
                     System.out.println("姓名 - 古佳乐");
                     System.out.println("学号 - 8008123201");
                     System.out.println("班级 - 计算机Ⅱ类2307班");
+                    System.out.println("版本 - 1.0");
+                    System.out.println("完成时间 - 2024年6月16日");
                 }
                 //错误的命令输入
                 default -> System.out.println("未知命令");
