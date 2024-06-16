@@ -80,7 +80,7 @@ public class App {
         aboutItem.setFont(font);
         aboutItem.setBackground(Color.WHITE);
         aboutItem.setForeground(Color.BLACK);
-        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(null, aboutItem.getText()));
+        aboutItem.addActionListener(e -> new AboutDlg());
 
         JMenuItem locationItem = new JMenuItem("位置显示");
         locationItem.setBorder(boarder);
