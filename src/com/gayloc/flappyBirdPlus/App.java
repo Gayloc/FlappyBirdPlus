@@ -1,3 +1,9 @@
+/**
+* @Description 程序入口
+* @Author 古佳乐
+* @Date 2024/6/13-下午1:45
+*/
+
 package com.gayloc.flappyBirdPlus;
 
 import javax.imageio.ImageIO;
@@ -7,14 +13,28 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+* {@code @Description} 程序主类
+* {@code @Author} 古佳乐
+* {@code @Date} 2024/6/13-下午1:45
+*/
 public class App {
 
+    // 两个全局静态布尔变量，设定是否显示碰撞箱和坐标
     public static Boolean showLocation = false;
     public static Boolean showBBox = false;
 
+    // 用来储存当前登录的用户和创建的客户端
     private static User user;
     private static Client client;
 
+    /**
+    * {@code @Description} 创建游戏窗口
+    * {@code @Param} void
+    * {@code @return} void
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午1:45
+    */
     private static void initWindow() {
 
         JFrame window = new JFrame("FlappyBirdPlus");
@@ -41,6 +61,13 @@ public class App {
         window.setVisible(true);
     }
 
+    /**
+    * {@code @Description} 设置菜单栏
+    * {@code @Param} void
+    * {@code @return} JMenuBar
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午1:45
+    */
     private static JMenuBar getMenuBar() {
 
         Font font = new Font("微软雅黑", Font.PLAIN, 12);
@@ -112,7 +139,7 @@ public class App {
         rankingTableItem.addActionListener(e -> new RankingTable(client));
         rankMenu.add(rankingTableItem);
 
-        //放在最下面的
+        // 放在最下面的
         fileMenu.add(exitItem);
         helpMenu.add(aboutItem);
 
@@ -122,6 +149,13 @@ public class App {
         return menuBar;
     }
 
+    /**
+    * {@code @Description} 设置删除分数的选项 
+    * {@code @Param} EmptyBorder boarder, Font font 
+    * {@code @return} JMenuItem 
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/15-下午9:46
+    */
     private static JMenuItem getDeleteScoreItem(EmptyBorder boarder, Font font) {
         JMenuItem deleteScoreItem = new JMenuItem("删除分数记录");
         deleteScoreItem.setBorder(boarder);
@@ -142,6 +176,13 @@ public class App {
         return deleteScoreItem;
     }
 
+    /**
+     * {@code @Description} 设置设置姓名的选项
+     * {@code @Param} EmptyBorder boarder, Font font
+     * {@code @return} JMenuItem
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/15-下午9:08
+     */
     private static JMenuItem getSetNameItem(EmptyBorder boarder, Font font) {
         JMenuItem setNameItem = new JMenuItem("修改姓名");
         setNameItem.setBorder(boarder);
@@ -160,31 +201,56 @@ public class App {
         return setNameItem;
     }
 
+    /**
+    * {@code @Description} 获取当前登录用户对象
+    * {@code @Param} void
+    * {@code @return} User
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/15-下午6:15
+    */
     public static User getUser() {
         return user;
     }
 
+    /**
+    * {@code @Description} 主函数
+    * {@code @Param} String[] args
+    * {@code @return} void
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/15-下午10:50
+    */
     public static void main(String[] args) {
+        // 默认的服务器路径
         String serverUrl = "http://47.115.212.24:8000";
 
+        // 如果参数中带有 test 则改服务器地址为本地服务器地址
         if (args.length != 0) {
             if (Objects.equals(args[0], "test")) {
                 serverUrl = "http://localhost:8000";
             }
         }
+        // 创建客户端用于通信
         client = new Client(serverUrl);
 
+        // 从本地配置文件获取用户信息
         user = client.getFromLocal();
+
+        // 如果无法从本地获取信息
         if (user == null) {
+            // 弹出对话框要求输入，isForce 为 true
             InputName inputName = new InputName(true);
+
+            // 从服务器查询对应分数信息
             int score = client.getScore(inputName.getInput());
+            // 保存到本地
             client.saveToLocal(new User(inputName.getInput(), score));
             user = client.getFromLocal();
         } else {
+            // 更新本地用户分数信息，实现多端同步
             user.setScore(client.getScore(user.getName()));
         }
 
-        // https://stackoverflow.com/a/22534931/4655368
+        // 关于使用 invokeLater 的原因 https://stackoverflow.com/a/22534931/4655368
         SwingUtilities.invokeLater(App::initWindow);
     }
 }

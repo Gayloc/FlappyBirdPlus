@@ -1,36 +1,69 @@
+/**
+* @Description 游戏画面组件
+* @Author 古佳乐
+* @Date 2024/6/13-下午1:45
+*/
+
 package com.gayloc.flappyBirdPlus;
 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+* {@code @Description} 游戏画面组件
+* {@code @Author} 古佳乐
+* {@code @Date} 2024/6/13-下午1:45
+*/
 public class Board extends JPanel implements ActionListener, KeyListener, MouseListener {
 
+    // 储存游戏控制器
     private final Controller controller;
 
+    // 游戏场景大小，窗口大小也基于这个数值，理论上支持所有主流分辨率显示器
     public static final int boardWidth = 1280;
     public static final int boardHeight = 720;
 
+    // 所有游戏中会出现的组件
     private final Player player;
     private final LocationText lt;
     private final java.util.Queue<Wall> walls;
     private final ScoreText scoreText;
     private final Background background;
     private final HintText hintText;
-
+    // 特殊的情况，需要等游戏初始化完成后才能加载这个组件
     private static BestScoreText bestScoreText = null;
 
+    /**
+    * {@code @Description} 获取最佳记录组件，用手更新用户信息
+    * {@code @Param} void
+    * {@code @return} BestScoreText
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/15-下午9:08
+    */
     public static BestScoreText getBestScoreText() {
         return bestScoreText;
     }
 
+    /**
+    * {@code @Description} 构造函数
+    * {@code @Param} Client c
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午3:19
+    */
     public Board(Client c) {
+        // 创建游戏控制器
         controller = new Controller(c);
+
+        // 获取游戏中出现的墙
         walls = controller.getWalls();
 
+        // 用于窗口自动设置大小
         setPreferredSize(new Dimension(boardWidth, boardHeight));
+        // 默认背景色，理论上看不见，调试用
         setBackground(new Color(232, 232, 232));
 
+        // 初始化所有游戏组件
         player = controller.getPlayer();
         lt = controller.getLocationText();
         scoreText = new ScoreText(player);
@@ -38,15 +71,24 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         hintText = new HintText();
         bestScoreText = new BestScoreText(App.getUser());
 
+        // 设置 tick 的时长
         int DELAY = 5;
 
+        // 设置计时器
         Timer timer = new Timer(DELAY, this);
         timer.start();
     }
 
+    /**
+    * {@code @Description} 计时器函数，每个 tick 触发一次
+    * {@code @Param} ActionEvent e
+    * {@code @return} void
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午3:19
+    */
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // 每个组件各自执行 tick 方法
         player.tick();
         lt.tick();
         walls.forEach(Wall::tick);
@@ -56,13 +98,22 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         hintText.tick();
         bestScoreText.tick();
 
+        // 重新绘制画面，会触发 paintComponent 方法
         repaint();
     }
 
+    /**
+    * {@code @Description} 绘制组件的方法
+    * {@code @Param} Graphics g
+    * {@code @return} void
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午3:19
+    */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // 每个组件各自执行各自的 render 方法
         background.render(g);
         player.render(g);
         lt.render(g);
@@ -84,13 +135,28 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         Toolkit.getDefaultToolkit().sync();
     }
 
+    /**
+    * {@code @Description} 重写 KeyEventListener 中的方法
+    * {@code @Param} KeyEvent e
+    * {@code @return} void
+    * {@code @Author} 古佳乐
+    * {@code @Date} 2024/6/13-下午3:19
+    */
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /**
+     * {@code @Description} 重写 KeyEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void keyPressed(KeyEvent e) {
+        // 点击任意键开始游戏或跳跃
         if (Controller.getIsGaming()) {
             player.jump();
         } else {
@@ -98,18 +164,40 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         }
     }
 
+    /**
+     * {@code @Description} 重写 KeyEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
 
+    /**
+     * {@code @Description} 重写 MouseEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
     }
 
+    /**
+     * {@code @Description} 重写 MouseEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
+        // 点击屏幕开始游戏或跳跃
         if (Controller.getIsGaming()) {
             player.jump();
         } else {
@@ -117,16 +205,37 @@ public class Board extends JPanel implements ActionListener, KeyListener, MouseL
         }
     }
 
+    /**
+     * {@code @Description} 重写 MouseEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
 
     }
 
+    /**
+     * {@code @Description} 重写 MouseEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
 
     }
 
+    /**
+     * {@code @Description} 重写 MouseEventListener 中的方法
+     * {@code @Param} KeyEvent e
+     * {@code @return} void
+     * {@code @Author} 古佳乐
+     * {@code @Date} 2024/6/13-下午3:19
+     */
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
 
