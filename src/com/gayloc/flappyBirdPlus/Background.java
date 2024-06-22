@@ -47,7 +47,7 @@ public class Background extends Component{
 
         // 使背景随时间移动时如果到最左边就恢复初始位置
         if (position.x < -Board.boardWidth) {
-            // 留一个 tick 的时间放置出现空隙
+            // 留一个 tick 的时间防止出现空隙
             position.x = this.getVelocity().x;
         }
     }
